@@ -172,10 +172,11 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 				Node node = nl.item(i);
 				if (node instanceof Element) {
 					Element ele = (Element) node;
+					//如果是Spring配置则走Default Element解析
 					if (delegate.isDefaultNamespace(ele)) {
 						parseDefaultElement(ele, delegate);
 					}
-					else {
+					else {//如果是自定义配置则走,Custom Element解析
 						delegate.parseCustomElement(ele);
 					}
 				}
