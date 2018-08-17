@@ -56,18 +56,20 @@ public class BeanFactoryUtilsTests {
 	private DefaultListableBeanFactory listableBeanFactory;
 
 	private DefaultListableBeanFactory dependentBeansFactory;
-
+	private DefaultListableBeanFactory grandParent;
+	private DefaultListableBeanFactory parent;
+	private DefaultListableBeanFactory child;
 
 	@Before
 	public void setUp() {
 		// Interesting hierarchical factory to test counts.
 		// Slow to read so we cache it.
 
-		DefaultListableBeanFactory grandParent = new DefaultListableBeanFactory();
+		grandParent = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(grandParent).loadBeanDefinitions(ROOT_CONTEXT);
-		DefaultListableBeanFactory parent = new DefaultListableBeanFactory(grandParent);
+		parent = new DefaultListableBeanFactory(grandParent);
 		new XmlBeanDefinitionReader(parent).loadBeanDefinitions(MIDDLE_CONTEXT);
-		DefaultListableBeanFactory child = new DefaultListableBeanFactory(parent);
+		child = new DefaultListableBeanFactory(parent);
 		new XmlBeanDefinitionReader(child).loadBeanDefinitions(LEAF_CONTEXT);
 
 		this.dependentBeansFactory = new DefaultListableBeanFactory();
@@ -76,6 +78,11 @@ public class BeanFactoryUtilsTests {
 		this.listableBeanFactory = child;
 	}
 
+	@Test
+	public void getBeanTest(){
+		TestBean testBean = (TestBean) grandParent.getBean("test");
+		System.out.println(testBean.getAge());
+	}
 
 	@Test
 	public void testHierarchicalCountBeansWithNonHierarchicalFactory() {

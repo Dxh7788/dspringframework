@@ -65,6 +65,9 @@ public class SimplePropertyNamespaceHandler implements NamespaceHandler {
 		return null;
 	}
 
+	/*
+	* 使用p标签,会增加一个新的属性配置
+	* */
 	@Override
 	public BeanDefinitionHolder decorate(Node node, BeanDefinitionHolder definition, ParserContext parserContext) {
 		if (node instanceof Attr) {
